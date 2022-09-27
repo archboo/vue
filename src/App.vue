@@ -1,12 +1,47 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <header>
+      <nav>
+        <router-link to="dashboard" class="router-link">Dashboard</router-link>
+        <router-link to="about" class="router-link">About</router-link>
+        <router-link to="notfound" class="router-link">NotFound</router-link>
+      </nav>
+    </header>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
+
+<script>
+// import About from '../src/pages/About.vue'
+// import NotFound from '../src/pages/NotFound.vue'
+// import Dashboard from '../src/pages/Dashboard.vue'
+
+export default {
+  name: 'App',
+  components: {
+    // About
+    // NotFound
+    // Dashboard
+  },
+  data: () => ({
+    page: 'DashBoard'
+
+  }),
+  computed: {
+
+  },
+  methods: {
+
+  },
+  created () {
+    console.log(this.$route.query.value)
+    console.log(this.$route.params.category)
+  }
+}
+
+</script>
 
 <style lang="scss">
 #app {
@@ -15,18 +50,15 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top: 60px;
+  position: relative;
 }
 
 nav {
-  padding: 30px;
+  margin-bottom: 15px;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.router-link {
+  margin: 0 5px;
 }
 </style>
