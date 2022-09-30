@@ -1,5 +1,5 @@
 <template>
-    <div class="create">
+    <div>
         <input type="date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" placeholder="Data" v-model="date"><br>
         <!-- <input type="text" placeholder="Category" v-model="category"><br> -->
         <select v-model="category">
@@ -14,26 +14,28 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'AddPaymentForm',
-  props: {
-    paymentsList: {
-      type: Array,
-      default: () => ([])
-    },
-    categoryList: {
-      type: Array,
-      default: () => ([])
-    },
-    show: Boolean
-  },
+  // props: {
+  //   paymentsList: {
+  //     type: Array,
+  //     default: () => ([])
+  //   },
+  //   categoryList: {
+  //     type: Array,
+  //     default: () => ([])
+  //   },
+  //   show: Boolean
+  // },
   data: () => ({
     date: '',
     category: '',
     value: ''
   }),
   methods: {
+    ...mapActions(['addNewPayment']),
     addPayment () {
       const { value, category, date, currenDate } = this
       const data = {
@@ -41,10 +43,13 @@ export default {
         category,
         date: date || currenDate
       }
-      this.$emit('add-payment', data)
-    }
+      // this.$emit('add-payment', data)
+      this.addNewPayment(data)
+    },
+    ...mapActions(['fetchCategoryData'])
   },
   computed: {
+    ...mapGetters(['categoryList']),
     currenDate () {
       const currentDate = new Date()
       const day = currentDate.getDate()
@@ -95,12 +100,22 @@ export default {
     width: 15px;
   }
 
-  input, select {
+  input {
     outline: none;
     margin-bottom: 15px;
     width: 90%;
     height: 20px;
-    border: none;
+    border: 0.5px solid rgb(221, 221, 221);
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  select {
+    outline: none;
+    margin-bottom: 15px;
+    width: 98%;
+    height: 40px;
+    border: 0.5px solid rgb(221, 221, 221);
     border-radius: 5px;
     padding: 10px;
   }
@@ -109,14 +124,7 @@ export default {
     outline: 1px solid rgb(185, 185, 185);
   }
 
-  .create {
-    margin:auto;
-    background-color: rgb(245, 245, 245);
-    width: 15%;
-    height: 220px;
-    padding: 25px;
-    border-radius: 5px;
-    box-shadow: 0px 5px 5px rgba(131, 131, 131, 0.397);
-    z-index: 2;
-  }
+  .close__btn {
+  margin-top: 100px;
+}
 </style>

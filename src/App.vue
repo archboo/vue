@@ -10,6 +10,12 @@
     <main>
       <router-view></router-view>
     </main>
+    <transition name="fade">
+      <ModalWindowAddPayment
+        v-if="showModal"
+        :settings="modalSettings"
+      />
+    </transition>
   </div>
 </template>
 
@@ -24,20 +30,28 @@ export default {
     // About
     // NotFound
     // Dashboard
+    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ModalWindowAddPayment.vue')
   },
   data: () => ({
-    page: 'DashBoard'
-
+    showModal: false,
+    modalSettings: {}
   }),
   computed: {
 
   },
   methods: {
+    modalOpen (settings) {
+      this.modalSettings = settings
+      this.showModal = true
+    },
 
+    modalClose () {
+      this.showModal = false
+    }
   },
-  created () {
-    console.log(this.$route.query.value)
-    console.log(this.$route.params.category)
+  mounted () {
+    this.$modal.EventBus.$on('show', this.modalOpen)
+    this.$modal.EventBus.$on('hide', this.modalClose)
   }
 }
 
@@ -51,7 +65,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  position: relative;
 }
 
 nav {
@@ -60,5 +73,13 @@ nav {
 
 .router-link {
   margin: 0 5px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .8s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

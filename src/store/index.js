@@ -47,6 +47,9 @@ export default new Vuex.Store({
         const categoryList = ['Food', 'Transport', 'Education', 'Sport']
         commit('SET_CATEGORY_LIST', categoryList)
       }, 1000)
+    },
+    addNewPayment ({ commit }, newPayment) {
+      commit('ADD_PAYMENT_DATA', newPayment)
     }
   }
 })

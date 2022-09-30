@@ -1,10 +1,11 @@
 <template>
   <div>
-    <button @click="show = !show"><span id="swap"></span><div><svg class="btn__img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"/></svg></div></button>
-    <AddPaymentForm
+    <button @click="addPayment">Add Payment<svg class="btn__img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"/></svg></button>
+    <!-- <button @click="show = !show"><span id="swap"></span><div><svg class="btn__img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"/></svg></div></button> -->
+    <!-- <AddPaymentForm
     class="modal-dialog"
     v-if="show" @add-payment="addPayment"
-    :categoryList="categoryList" />
+    :categoryList="categoryList" /> -->
     <PaymentsDisplay
     :paymentsList="paymentsList"
     show
@@ -14,17 +15,17 @@
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-import AddPaymentForm from '@/components/AddPaymentForm.vue'
+// import AddPaymentForm from '@/components/AddPaymentForm.vue'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'DashBoard',
   components: {
-    PaymentsDisplay,
-    AddPaymentForm
+    PaymentsDisplay
   },
   data: () => ({
-    show: false
+    showModal: false,
+    modalSettings: {}
   }),
   computed: {
     ...mapGetters(['paymentsList', 'categoryList'])
@@ -32,17 +33,8 @@ export default {
   methods: {
     ...mapActions(['fetchData', 'fetchCategoryData']),
     ...mapMutations(['ADD_PAYMENT_DATA']),
-    addPayment (data) {
-      // this.paymentsList.push(data)
-      // this.$store.commit('ADD_PAYMENT_DATA', data)
-      this.ADD_PAYMENT_DATA(data)
-    },
-    renameBTN () {
-      if (this.show === true) {
-        document.getElementById('swap').innerHTML = 'sdsdvsv'
-      } else {
-        document.getElementById('swap').innerHTML = 'ADD NEW COST'
-      }
+    addPayment () {
+      this.$modal.show({ title: 'Add new payment', content: 'addPaymentForm' })
     }
   },
   mounted () {
@@ -51,12 +43,10 @@ export default {
         this.show = true
       }
     }, 2000)
-    this.renameBTN()
   },
   created () {
     this.fetchData()
     this.fetchCategoryData()
-    // this.$store.commit('SET_PAYMENTS_LIST', this.fetchPaymentsData())
   }
 }
 </script>
@@ -81,11 +71,4 @@ button {
   margin-bottom: 20px;
 }
 
-.modal-dialog {
-  position: fixed;
-  top: -40%;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
 </style>
